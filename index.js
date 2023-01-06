@@ -16,23 +16,13 @@ app.post("/hook", (req, res) => {
 
 const generateData = (res) => {
 
-  console.log(res) // Call your action on the request here
-
-  data = [{
-    firstName: 'John',
-    lastName: 'Doe'
-   }, {
-    firstName: 'Smith',
-    lastName: 'Peters'
-   }, {
-    firstName: 'Alice',
-    lastName: 'Lee'
-   }]
+  console.log(res);
+  data = [{}]
    
-   const ws = XLSX.utils.json_to_sheet(data)
-   const wb = XLSX.utils.book_new()
-   XLSX.utils.book_append_sheet(wb, ws, 'Responses')
-   XLSX.writeFile(wb, 'sampleData.xlsx')
+   //const ws = XLSX.utils.json_to_sheet(data)
+   //const wb = XLSX.utils.book_new()
+   //XLSX.utils.book_append_sheet(wb, ws, 'Responses')
+   //XLSX.writeFile(wb, 'sampleData.xlsx')
 
 }
 

@@ -1,8 +1,7 @@
 const ExcelJS = require("exceljs");
 const fs = require("fs");
-const logger = require('logger').createLogger('development.log');
-logger.setLevel('debug');
-
+const logger = require("logger").createLogger("development.log");
+logger.setLevel("debug");
 
 // Require express and body-parser
 const express = require("express");
@@ -35,19 +34,16 @@ const generateData = async (res) => {
 
   try {
     let jsonData = res;
-    if (jsonData && jsonData.resource && jsonData.step && jsonData.step.data) {
+    if (
+      jsonData &&
+      jsonData.resource &&
+      jsonData.step &&
+      jsonData.step.data &&
+      jsonData.step.data.fullName
+    ) {
       const verificationId = jsonData.resource.substring(
         jsonData.resource.lastIndexOf("/") + 1
       );
-      data = [
-        {
-          "Verification ID": verificationId,
-          IdentityStatus: jsonData.step.data.fullName,
-          Name: jsonData.step.data.fullName,
-          DocumentNumber: jsonData.step.data.dateOfBirth,
-        },
-      ];
-
       let path = "export.xlsx";
       const workbook = new ExcelJS.Workbook();
       let worksheet = null;

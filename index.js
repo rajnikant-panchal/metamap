@@ -1,5 +1,8 @@
 const ExcelJS = require("exceljs");
 const fs = require("fs");
+const logger = require('logger').createLogger('development.log');
+logger.setLevel('debug');
+
 
 // Require express and body-parser
 const express = require("express");
@@ -28,7 +31,7 @@ app.post("/hook", (req, res) => {
 });
 
 const generateData = async (res) => {
-  console.log(JSON.stringify(res)); // Call your action on the request here
+  logger.debug(JSON.stringify(res)); // Call your action on the request here
 
   try {
     let jsonData = res;
@@ -83,10 +86,10 @@ const generateData = async (res) => {
       }
     }
   } catch (err) {
-    console.log("Not able to parse the Response " + res);
-    console.log("Error " + err);
+    logger.debug("Not able to parse the Response " + res);
+    logger.debug("Error " + err);
   }
 };
 
 // Start express on the defined port
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => logger.debug(`🚀 Server running on port ${PORT}`));

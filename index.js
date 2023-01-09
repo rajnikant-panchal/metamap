@@ -38,6 +38,10 @@ app.get("/view/report", (req, res) => {
         data: jsonArr,
       });
     });
+  } else {
+    res.render("report", {
+      data: [],
+    });
   }
 });
 

@@ -12,6 +12,35 @@ const PORT = 5000;
 // Tell express to use body-parser's JSON parsing
 app.use(bodyParser.json());
 
+// set the view engine to ejs
+app.set("view engine", "ejs");
+
+app.get("/view/report", (req, res) => {
+  const filePath = "export.xlsx";
+  const workbook = new ExcelJS.Workbook();
+  if (fs.existsSync(filePath)) {
+    workbook.xlsx.readFile(filePath).then(function () {
+      var worksheet = workbook.getWorksheet("Responses");
+      let rows = worksheet.getRows(2,worksheet.rowCount-1);
+      
+      let jsonArr = [];
+      rows.forEach((row) => {
+        let data = {
+          VerificationID: row.getCell(1).value,
+          IdentityStatus: row.getCell(2).value,
+          Name: row.getCell(3).value,
+          DocumentNumber: row.getCell(4).value,
+          resource: row.getCell(5).value,
+        };
+        jsonArr.push(data);
+      });
+      res.render("report", {
+        data: jsonArr,
+      });
+    });
+  }
+});
+
 app.get("/download/report", (req, res) => {
   const filePath = "export.xlsx";
   res.download(filePath, "export.xlsx", (err) => {
@@ -43,7 +72,6 @@ const generateData = async (res) => {
       jsonData.step.data.fullName.value &&
       jsonData.step.data.documentNumber &&
       jsonData.step.data.documentNumber.value
-      
     ) {
       const verificationId = jsonData.resource.substring(
         jsonData.resource.lastIndexOf("/") + 1

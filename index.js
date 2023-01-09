@@ -39,7 +39,11 @@ const generateData = async (res) => {
       jsonData.resource &&
       jsonData.step &&
       jsonData.step.data &&
-      jsonData.step.data.fullName
+      jsonData.step.data.fullName &&
+      jsonData.step.data.fullName.value &&
+      jsonData.step.data.documentNumber &&
+      jsonData.step.data.documentNumber.value
+      
     ) {
       const verificationId = jsonData.resource.substring(
         jsonData.resource.lastIndexOf("/") + 1
@@ -63,8 +67,8 @@ const generateData = async (res) => {
       worksheet.addRow({
         VerificationID: verificationId,
         IdentityStatus: "",
-        Name: jsonData.step.data.fullName,
-        DocumentNumber: jsonData.step.data.documentNumber,
+        Name: jsonData.step.data.fullName.value,
+        DocumentNumber: jsonData.step.data.documentNumber.value,
         resource: jsonData.resource,
       });
       await workbook.xlsx.writeFile(path);

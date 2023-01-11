@@ -6,49 +6,102 @@ logger.setLevel("debug");
 // Require express and body-parser
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const connectDB = require("./config/db");
+const dotenv = require("dotenv");
+const metaMapRoutes = require("./routes/metaMapRoutes");
+const metamMap = require("./models/metaMapModel");
+const metaMapControllers = require("./controllers/metaMapControllers");
+
+dotenv.config();
+connectDB();
+
 // Initialize express and define a port
 const app = express();
 const PORT = 5000;
 // Tell express to use body-parser's JSON parsing
 app.use(bodyParser.json());
 
+app.use(bodyParser.urlencoded({ extended: true })); 
+
+const whitelist = ["http://47.87.213.40/", "http://47.87.213.40"];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
+app.use(express.static('public'))
+
 // set the view engine to ejs
 app.set("view engine", "ejs");
 
-app.get("/view/report", (req, res) => {
-  const filePath = "export.xlsx";
-  const workbook = new ExcelJS.Workbook();
-  if (fs.existsSync(filePath)) {
-    workbook.xlsx.readFile(filePath).then(function () {
-      var worksheet = workbook.getWorksheet("Responses");
-      let rows = worksheet.getRows(2,worksheet.rowCount-1);
-      
-      let jsonArr = [];
-      rows.forEach((row) => {
-        let data = {
-          VerificationID: row.getCell(1).value,
-          IdentityStatus: row.getCell(2).value,
-          Name: row.getCell(3).value,
-          DocumentNumber: row.getCell(4).value,
-          resource: row.getCell(5).value,
-        };
-        jsonArr.push(data);
-      });
+app.use("/api", metaMapRoutes);
+
+app.get("/view/report", async (req, res) => {
+  metaMapControllers.getAllData().then((response) => {
+    if (response) {
       res.render("report", {
-        data: jsonArr,
+        data: response,
       });
-    });
-  } else {
-    res.render("report", {
-      data: [],
-    });
-  }
+    } else {
+      res.render("report", {
+        data: [],
+      });
+    }
+  });
 });
 
 app.get("/download/report", (req, res) => {
-  const filePath = "export.xlsx";
-  res.download(filePath, "export.xlsx", (err) => {
-    if (err) {
+  metaMapControllers.getAllData().then(async (response) => {
+    if (response) {
+      const filePath = "report.xlsx";
+      const workbook = new ExcelJS.Workbook();
+      let worksheet = workbook.addWorksheet("Responses");
+
+      worksheet.columns = [
+        { header: "Verification ID", key: "VerificationID", width: 10 },
+        { header: "IdentityStatus", key: "IdentityStatus", width: 32 },
+        { header: "Name.", key: "Name", width: 15 },
+        { header: "DocumentNumber", key: "DocumentNumber", width: 32 },
+        { header: "Birth Date", key: "dateOfBirth", width: 32 },
+        { header: "Field 1", key: "field1", width: 32 },
+        { header: "Field 2", key: "field2", width: 32 },
+        { header: "Field 3", key: "field3", width: 32 },
+        { header: "Resource", key: "resource", width: 32 },
+      ];
+
+      for (let data of response) {
+        worksheet.addRow({
+          VerificationID: data.verificationId,
+          IdentityStatus: data.identityStatus,
+          Name: data.name,
+          DocumentNumber: data.documentNumber,
+          dateOfBirth: data.dateOfBirth,
+          field1: data.field1,
+          field2: data.field2,
+          field3: data.field3,
+          resource: data.resource,
+        });
+      }
+      await workbook.xlsx.writeFile(filePath).then((data) => {
+        console.log(data);
+        res.download(filePath, "report.xlsx", (err) => {
+          if (err) {
+            res.send({
+              error: err,
+              msg: "Problem downloading the file",
+            });
+          }
+        });
+      });
+    } else {
       res.send({
         error: err,
         msg: "Problem downloading the file",
@@ -80,42 +133,29 @@ const generateData = async (res) => {
       const verificationId = jsonData.resource.substring(
         jsonData.resource.lastIndexOf("/") + 1
       );
-      let path = "export.xlsx";
-      const workbook = new ExcelJS.Workbook();
-      let worksheet = null;
-      if (fs.existsSync(path)) {
-        await workbook.xlsx.readFile(path);
-        worksheet = workbook.getWorksheet("Responses");
-      } else {
-        worksheet = workbook.addWorksheet("Responses");
-      }
-      worksheet.columns = [
-        { header: "Verification ID", key: "VerificationID", width: 10 },
-        { header: "IdentityStatus", key: "IdentityStatus", width: 32 },
-        { header: "Name.", key: "Name", width: 15 },
-        { header: "DocumentNumber", key: "DocumentNumber", width: 32 },
-        { header: "Resource", key: "resource", width: 32 },
-      ];
-      worksheet.addRow({
-        VerificationID: verificationId,
-        IdentityStatus: "",
-        Name: jsonData.step.data.fullName.value,
-        DocumentNumber: jsonData.step.data.documentNumber.value,
+
+      const obj = await metamMap.create({
+        verificationId: verificationId,
+        identityStatus: "",
+        name: jsonData.step.data.fullName.value,
+        documentNumber: jsonData.step.data.documentNumber.value,
+        dateOfBirth: jsonData.step.data.dateOfBirth.value,
         resource: jsonData.resource,
       });
-      await workbook.xlsx.writeFile(path);
     } else if (jsonData && jsonData.resource && jsonData.identityStatus) {
-      let path = "export.xlsx";
-      const workbook = new ExcelJS.Workbook();
-      if (fs.existsSync(path)) {
-        workbook.xlsx.readFile(path).then(function () {
-          var worksheet = workbook.getWorksheet("Responses");
-          var lastRow = worksheet.lastRow;
-          lastRow.getCell(2).value = jsonData.identityStatus;
-          lastRow.commit();
-          return workbook.xlsx.writeFile(path);
-        });
-      }
+      let lastRec = await metamMap.findOne({}).sort({ _id: -1 });
+      lastRec.identityStatus = jsonData.identityStatus;
+      await metamMap.findByIdAndUpdate(
+        lastRec._id,
+        { $set: lastRec },
+        function (err, data) {
+          if (err) {
+            console.log("Error while updaing data.!");
+          } else {
+            console.log("Last record updated.!");
+          }
+        }
+      );
     }
   } catch (err) {
     logger.debug("Not able to parse the Response " + res);

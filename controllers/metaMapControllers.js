@@ -3,7 +3,6 @@ const metamMap = require("../models/metaMapModel");
 
 const getAllData = asyncHandler(async (req, res) => {
   const data = await metamMap.find({});
- // console.log(data);
   return data;
 });
 
@@ -77,7 +76,7 @@ const updateDataById = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Data Not Found");
       } else {
-        res.redirect("http://47.87.213.40/view/report");
+        res.redirect("http://httpwebhook.herokuapp.com/view/report");
       }
     }
   );

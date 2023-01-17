@@ -1,6 +1,6 @@
 const ExcelJS = require("exceljs");
 const fs = require("fs");
-const logger = require("logger").createLogger("development.log");
+const logger = require("logger").createLogger("public/development.log");
 logger.setLevel("debug");
 
 // Require express and body-parser
@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
-const whitelist = ["http://47.87.213.40/", "http://47.87.213.40"];
+const whitelist = ["http://47.87.213.40", "http://localhost:5000", "http://httpwebhook.herokuapp.com"];
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
@@ -162,6 +162,8 @@ const generateData = async (res) => {
     logger.debug("Error " + err);
   }
 };
+
+app.use(express.static('public'));
 
 // Start express on the defined port
 app.listen(PORT, () => logger.debug(`🚀 Server running on port ${PORT}`));

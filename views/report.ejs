@@ -304,7 +304,7 @@
               <h2>Verified <b> Report</b></h2>
             </div>
             <div class="col-sm-6">
-              <a href="http://47.87.213.40/download/report" class="btn btn-success" ><i class="material-icons save">&#xe161;</i> <span>Export</span></a>
+              <a href="http://httpwebhook.herokuapp.com/download/report" class="btn btn-success" ><i class="material-icons save">&#xe161;</i> <span>Export</span></a>
             </div>
           </div>
         </div>
@@ -319,7 +319,7 @@
               <th scope="col" class="text-nowrap">Field 1</th>
               <th scope="col" class="text-nowrap">Field 2</th>
               <th scope="col" class="text-nowrap">Field 3</th>
-              <th scope="col" class="text-nowrap">Action</th>
+              <th scope="col" class="text-nowrap" colspan="2">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -354,10 +354,13 @@
                     <a href="#editEmployeeModal" data-id="<%= row._id %>" class="edit editingTRbutton" data-toggle="modal"><i
                         class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                   </td>
+                  <td>
+                    <a href="#" class="edit sendTRbutton" title="Send"><i class="material-icons send">&#xe163;</i></a>
+                  </td>
                 </tr>
                 <% })}else{ %>
                   <tr>
-                    <td colspan="9" align="center">
+                    <td colspan="10" align="center">
                       <h4>No Record Found</h4>
                     </td>
 
@@ -386,7 +389,7 @@
   <div class="modal fade" id="editEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <form id="modalForm" enctype='application/json' action="http://47.87.213.40/api/updateDataById/" method="post">
+        <form id="modalForm" enctype='application/json' action="http://httpwebhook.herokuapp.com/api/updateDataById/" method="post">
           <div class="modal-header">
             <h4 class="modal-title">Edit</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

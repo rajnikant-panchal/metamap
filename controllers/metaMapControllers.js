@@ -16,6 +16,10 @@ const addData = asyncHandler(async (req, res) => {
     field1,
     field2,
     field3,
+    phoneNumber,
+    emailAddress,
+    gender,
+    nationality,
   } = req.body;
 
   const obj = await metamMap.create({
@@ -28,6 +32,10 @@ const addData = asyncHandler(async (req, res) => {
     field2,
     field3,
     resource,
+    phoneNumber,
+    emailAddress,
+    gender,
+    nationality,
   });
 
   if (obj) {
@@ -42,6 +50,10 @@ const addData = asyncHandler(async (req, res) => {
       field2: obj.field2,
       field3: obj.field3,
       resource: obj.resource,
+      phoneNumber: obj.phoneNumber,
+      emailAddress: obj.emailAddress,
+      gender: obj.gender,
+      nationality: obj.nationality
     });
   } else {
     res.status(400);

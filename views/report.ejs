@@ -80,7 +80,6 @@
     table.table tr th,
     table.table tr td {
       border-color: #e9e9e9;
-      padding: 12px 15px;
       vertical-align: middle;
     }
 
@@ -295,82 +294,103 @@
 </head>
 
 <body>
-  <div class="container-xl">
-    <div class="table-responsive">
-      <div class="table-wrapper">
-        <div class="table-title">
-          <div class="row">
-            <div class="col-sm-6">
-              <h2>Verified <b> Report</b></h2>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="m-4">
+        <div class="table-responsive">
+          <div class="table-wrapper">
+            <div class="table-title">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h2>Verified <b> Report</b></h2>
+                </div>
+                <div class="col-sm-6">
+                  <a href="http://httpwebhook.herokuapp.com/download/report" class="btn btn-success"><i
+                      class="material-icons save">&#xe161;</i> <span>Export</span></a>
+                </div>
+              </div>
             </div>
-            <div class="col-sm-6">
-              <a href="http://httpwebhook.herokuapp.com/download/report" class="btn btn-success" ><i class="material-icons save">&#xe161;</i> <span>Export</span></a>
-            </div>
-          </div>
-        </div>
-        <table class="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th scope="col" class="text-nowrap">Verification Id</th>
-              <th scope="col" class="text-nowrap">Identity Status</th>
-              <th scope="col" class="text-nowrap">Name</th>
-              <th scope="col" class="text-nowrap">Doc. Number</th>
-              <th scope="col" class="text-nowrap">Birth Date</th>
-              <th scope="col" class="text-nowrap">Field 1</th>
-              <th scope="col" class="text-nowrap">Field 2</th>
-              <th scope="col" class="text-nowrap">Field 3</th>
-              <th scope="col" class="text-nowrap" colspan="2">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%if (data.length> 0){ %>
-              <% data.forEach(function(row){ %>
+            <table class="table table-striped table-hover">
+              <thead>
                 <tr>
-                  <td>
-                    <%= row.verificationId %>
-                  </td>
-                  <td>
-                    <%= row.identityStatus %>
-                  </td>
-                  <td>
-                    <%= row.name %>
-                  </td>
-                  <td>
-                    <%= row.documentNumber %>
-                  </td>
-                  <td>
-                    <%= row.dateOfBirth %>
-                  </td>
-                  <td>
-                    <%= row.field1 %>
-                  </td>
-                  <td>
-                    <%= row.field2 %>
-                  </td>
-                  <td>
-                    <%= row.field3 %>
-                  </td>
-                  <td>
-                    <a href="#editEmployeeModal" data-id="<%= row._id %>" class="edit editingTRbutton" data-toggle="modal"><i
-                        class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                  </td>
-                  <td>
-                    <a href="#" class="edit sendTRbutton" title="Send"><i class="material-icons send">&#xe163;</i></a>
-                  </td>
+                  <th scope="col" class="text-nowrap">Verification Id</th>
+                  <th scope="col" class="text-nowrap">Identity Status</th>
+                  <th scope="col" class="text-nowrap">Name</th>
+                  <th scope="col" class="text-nowrap">Doc. Number</th>
+                  <th scope="col" class="text-nowrap">Birth Date</th>
+                  <th scope="col" class="text-nowrap">Phone</th>
+                  <th scope="col" class="text-nowrap">Email</th>
+                  <th scope="col" class="text-nowrap">Gender</th>
+                  <th scope="col" class="text-nowrap">Nationality</th>
+                  <th scope="col" class="text-nowrap">Field 1</th>
+                  <th scope="col" class="text-nowrap">Field 2</th>
+                  <th scope="col" class="text-nowrap">Field 3</th>
+                  <th scope="col" class="text-nowrap" colspan="2">Action</th>
                 </tr>
-                <% })}else{ %>
-                  <tr>
-                    <td colspan="10" align="center">
-                      <h4>No Record Found</h4>
-                    </td>
+              </thead>
+              <tbody>
+                <%if (data.length> 0){ %>
+                  <% data.forEach(function(row){ %>
+                    <tr>
+                      <td>
+                        <%= row.verificationId %>
+                      </td>
+                      <td>
+                        <%= row.identityStatus %>
+                      </td>
+                      <td>
+                        <%= row.name %>
+                      </td>
+                      <td>
+                        <%= row.documentNumber %>
+                      </td>
+                      <td>
+                        <%= row.dateOfBirth %>
+                      </td>
+                      <td>
+                        <%= row.phoneNumber %>
+                      </td>
+                      <td>
+                        <%= row.emailAddress %>
+                      </td>
+                      <td>
+                        <%= row.gender %>
+                      </td>
+                      <td>
+                        <%= row.nationality %>
+                      </td>
+                      <td>
+                        <%= row.field1 %>
+                      </td>
+                      <td>
+                        <%= row.field2 %>
+                      </td>
+                      <td>
+                        <%= row.field3 %>
+                      </td>
+                      <td>
+                        <a href="#editEmployeeModal" data-id="<%= row._id %>" class="edit editingTRbutton"
+                          data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+                            title="Edit">&#xE254;</i></a>
+                      </td>
+                      <td>
+                        <a href="#" class="edit sendTRbutton" title="Send"><i
+                            class="material-icons send">&#xe163;</i></a>
+                      </td>
+                    </tr>
+                    <% })}else{ %>
+                      <tr>
+                        <td colspan="14" align="center">
+                          <h4>No Record Found</h4>
+                        </td>
 
-                  </tr>
-                  <% } %>
+                      </tr>
+                      <% } %>
 
 
-          </tbody>
-        </table>
-        <!-- <div class="clearfix">
+              </tbody>
+            </table>
+            <!-- <div class="clearfix">
           <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
           <ul class="pagination">
             <li class="page-item disabled"><a href="#">Previous</a></li>
@@ -382,51 +402,81 @@
             <li class="page-item"><a href="#" class="page-link">Next</a></li>
           </ul>
         </div> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <!-- Edit Modal HTML -->
-  <div class="modal fade" id="editEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade" id="editEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+    aria-hidden="true">
+    <div class="modal-lg modal-dialog" style="max-width: 60%;" role="document">
       <div class="modal-content">
-        <form id="modalForm" enctype='application/json' action="http://httpwebhook.herokuapp.com/api/updateDataById/" method="post">
+        <form id="modalForm" enctype='application/json' action="http://httpwebhook.herokuapp.com/api/updateDataById/"
+          method="post">
           <div class="modal-header">
             <h4 class="modal-title">Edit</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
-            <div class="form-group">
-              <label>Verification ID</label>
-              <input type="hidden" name="id">
-              <input type="text" class="form-control" name="verificationId">
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label>Verification ID</label>
+                <input type="hidden" name="id">
+                <input type="text" class="form-control" name="verificationId">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Identity Status</label>
+                <input type="text" class="form-control" name="identityStatus">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Name</label>
+                <input type="text" class="form-control" name="name">
+              </div>
             </div>
-            <div class="form-group">
-              <label>Identity Status</label>
-              <input type="text" class="form-control" name="identityStatus">
+
+            <div class="form-row">
+
+              <div class="form-group col-md-4">
+                <label>Document Number</label>
+                <input type="text" class="form-control" name="documentNumber">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Birth Date</label>
+                <input type="text" class="form-control" name="dateOfBirth">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Phone</label>
+                <input type="text" class="form-control" name="phoneNumber">
+              </div>
             </div>
-            <div class="form-group">
-              <label>Name</label>
-              <input type="text" class="form-control" name="name">
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label>Email</label>
+                <input type="text" class="form-control" name="emailAddress">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Gender</label>
+                <input type="text" class="form-control" name="gender">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Nationality</label>
+                <input type="text" class="form-control" name="nationality">
+              </div>
             </div>
-            <div class="form-group">
-              <label>Document Number</label>
-              <input type="text" class="form-control" name="documentNumber">
-            </div>
-            <div class="form-group">
-              <label>Birth Date</label>
-              <input type="text" class="form-control" name="dateOfBirth">
-            </div>
-            <div class="form-group">
-              <label>Add. Field 1</label>
-              <input type="text" class="form-control" name="field1">
-            </div>
-            <div class="form-group">
-              <label>Add. Field 2</label>
-              <input type="text" class="form-control" name="field2">
-            </div>
-            <div class="form-group">
-              <label>Add. Field 3</label>
-              <input type="text" class="form-control" name="field3">
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label>Add. Field 1</label>
+                <input type="text" class="form-control" name="field1">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Add. Field 2</label>
+                <input type="text" class="form-control" name="field2">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Add. Field 3</label>
+                <input type="text" class="form-control" name="field3">
+              </div>
             </div>
           </div>
           <div class="modal-footer">

@@ -20,6 +20,10 @@ function get() {
           $('#modalForm [name="field2"]').val(response.field2);
           $('#modalForm [name="field3"]').val(response.field3);
           $('#modalForm [name="dateOfBirth"]').val(response.dateOfBirth);
+          $('#modalForm [name="phoneNumber"]').val(response.phoneNumber);
+          $('#modalForm [name="emailAddress"]').val(response.emailAddress);
+          $('#modalForm [name="gender"]').val(response.gender);
+          $('#modalForm [name="nationality"]').val(response.nationality);
         },
       });
     }
@@ -39,6 +43,10 @@ function sendData() {
     let col6=currentRow.find("td:eq(5)").text().trim();
     let col7=currentRow.find("td:eq(6)").text().trim();
     let col8=currentRow.find("td:eq(7)").text().trim();
+    let col9=currentRow.find("td:eq(8)").text().trim();
+    let col10=currentRow.find("td:eq(9)").text().trim();
+    let col11=currentRow.find("td:eq(10)").text().trim();
+    let col12=currentRow.find("td:eq(11)").text().trim();
     
     let jsonData = {
       "verificationId": col1,
@@ -46,9 +54,13 @@ function sendData() {
       "name": col3,
       "documentNumber": col4,
       "dateOfBirth": col5,
-      "add field1": col6,
-      "add field2": col7,
-      "add field3": col8
+      "phone": col6,
+      "email": col7,
+      "gender": col8,
+      "nationality": col9,
+      "add field1": col10,
+      "add field2": col11,
+      "add field3": col12
     }
     
     $.ajax({

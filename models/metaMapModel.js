@@ -10,7 +10,11 @@ const metaMap = new Schema({
   field1: { type: String, required: false },
   field2: { type: String, required: false },
   field3: { type: String, required: false },
+  phoneNumber: { type: String, required: false },
+  emailAddress: { type: String, required: false },
+  gender: { type: String, required: false },
   resource: { type: String, required: false },
+  nationality: { type: String, required: false },
   
 });
 

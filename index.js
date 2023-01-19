@@ -22,9 +22,13 @@ const PORT = 5000;
 // Tell express to use body-parser's JSON parsing
 app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const whitelist = ["http://47.87.213.40", "http://localhost:5000", "http://httpwebhook.herokuapp.com"];
+const whitelist = [
+  "http://47.87.213.40",
+  "http://localhost:5000",
+  "http://httpwebhook.herokuapp.com",
+];
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
@@ -37,7 +41,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use(express.static('public'))
+app.use(express.static("public"));
 
 // set the view engine to ejs
 app.set("view engine", "ejs");
@@ -71,6 +75,10 @@ app.get("/download/report", (req, res) => {
         { header: "Name.", key: "Name", width: 15 },
         { header: "DocumentNumber", key: "DocumentNumber", width: 32 },
         { header: "Birth Date", key: "dateOfBirth", width: 32 },
+        { header: "Phone Number", key: "phoneNumber", width: 32 },
+        { header: "EmailAddress", key: "emailAddress", width: 32 },
+        { header: "Gender", key: "gender", width: 32 },
+        { header: "Nationality", key: "nationality", width: 32 },
         { header: "Field 1", key: "field1", width: 32 },
         { header: "Field 2", key: "field2", width: 32 },
         { header: "Field 3", key: "field3", width: 32 },
@@ -84,6 +92,10 @@ app.get("/download/report", (req, res) => {
           Name: data.name,
           DocumentNumber: data.documentNumber,
           dateOfBirth: data.dateOfBirth,
+          phoneNumber: data.phoneNumber,
+          emailAddress: data.emailAddress,
+          gender: data.gender,
+          nationality: data.nationality,
           field1: data.field1,
           field2: data.field2,
           field3: data.field3,
@@ -141,10 +153,54 @@ const generateData = async (res) => {
         documentNumber: jsonData.step.data.documentNumber.value,
         dateOfBirth: jsonData.step.data.dateOfBirth.value,
         resource: jsonData.resource,
+        nationality: jsonData.step.data.nationality
+          ? jsonData.step.data.nationality.value
+          : "",
+        gender: jsonData.step.data.sex ? jsonData.step.data.sex.value : "",
       });
     } else if (jsonData && jsonData.resource && jsonData.identityStatus) {
       let lastRec = await metamMap.findOne({}).sort({ _id: -1 });
       lastRec.identityStatus = jsonData.identityStatus;
+      await metamMap.findByIdAndUpdate(
+        lastRec._id,
+        { $set: lastRec },
+        function (err, data) {
+          if (err) {
+            console.log("Error while updaing data.!");
+          } else {
+            console.log("Last record updated.!");
+          }
+        }
+      );
+    } else if (
+      jsonData &&
+      jsonData.resource &&
+      jsonData.step &&
+      jsonData.step.data &&
+      jsonData.step.data.phoneNumber
+    ) {
+      let lastRec = await metamMap.findOne({}).sort({ _id: -1 });
+      lastRec.phoneNumber = jsonData.step.data.phoneNumber;
+      await metamMap.findByIdAndUpdate(
+        lastRec._id,
+        { $set: lastRec },
+        function (err, data) {
+          if (err) {
+            console.log("Error while updaing data.!");
+          } else {
+            console.log("Last record updated.!");
+          }
+        }
+      );
+    } else if (
+      jsonData &&
+      jsonData.resource &&
+      jsonData.step &&
+      jsonData.step.data &&
+      jsonData.step.data.emailAddress
+    ) {
+      let lastRec = await metamMap.findOne({}).sort({ _id: -1 });
+      lastRec.emailAddress = jsonData.step.data.emailAddress;
       await metamMap.findByIdAndUpdate(
         lastRec._id,
         { $set: lastRec },
@@ -162,8 +218,6 @@ const generateData = async (res) => {
     logger.debug("Error " + err);
   }
 };
-
-app.use(express.static('public'));
 
 // Start express on the defined port
 app.listen(PORT, () => logger.debug(`🚀 Server running on port ${PORT}`));

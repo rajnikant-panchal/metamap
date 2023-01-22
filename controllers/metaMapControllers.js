@@ -88,7 +88,7 @@ const updateDataById = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Data Not Found");
       } else {
-        res.redirect("http://httpwebhook.herokuapp.com/view/report");
+        res.redirect("https://httpwebhook.herokuapp.com/view/report");
       }
     }
   );

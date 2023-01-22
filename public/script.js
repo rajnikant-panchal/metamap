@@ -6,7 +6,7 @@ function get() {
       // Ajax config
       $.ajax({
         type: "GET", //we are using GET method to get data from server side
-        url: "http://httpwebhook.herokuapp.com/api/getDataById/"+id, // get the route value
+        url: "https://httpwebhook.herokuapp.com/api/getDataById/"+id, // get the route value
         beforeSend: function () {
           //We add this before send to disable the button once we submit it so that we prevent the multiple click
         },

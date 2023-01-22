@@ -168,9 +168,7 @@ if (cluster.isMaster) {
         jsonData.step &&
         jsonData.step.data &&
         jsonData.step.data.fullName &&
-        jsonData.step.data.fullName.value &&
-        jsonData.step.data.documentNumber &&
-        jsonData.step.data.documentNumber.value
+        jsonData.step.data.documentNumber
       ) {
         const verificationId = jsonData.resource.substring(
           jsonData.resource.lastIndexOf("/") + 1
@@ -181,9 +179,15 @@ if (cluster.isMaster) {
         });
 
         if (lastRec) {
-          lastRec.name = jsonData.step.data.fullName.value;
-          lastRec.documentNumber = jsonData.step.data.documentNumber.value;
-          lastRec.dateOfBirth = jsonData.step.data.dateOfBirth.value;
+          lastRec.name = jsonData.step.data.fullName.value
+            ? jsonData.step.data.fullName.value
+            : "";
+          lastRec.documentNumber = jsonData.step.data.documentNumber.value
+            ? jsonData.step.data.documentNumber.value
+            : "";
+          lastRec.dateOfBirth = jsonData.step.data.dateOfBirth
+            ? jsonData.step.data.dateOfBirth.value
+            : "";
           lastRec.resource = jsonData.resource;
           lastRec.nationality = jsonData.step.data.nationality
             ? jsonData.step.data.nationality.value
@@ -206,9 +210,15 @@ if (cluster.isMaster) {
         } else {
           let inputJson = {
             verificationId: verificationId,
-            name: jsonData.step.data.fullName.value,
-            documentNumber: jsonData.step.data.documentNumber.value,
-            dateOfBirth: jsonData.step.data.dateOfBirth.value,
+            name: jsonData.step.data.fullName.value
+              ? jsonData.step.data.fullName.value
+              : "",
+            documentNumber: jsonData.step.data.documentNumber.value
+              ? jsonData.step.data.documentNumber.value
+              : "",
+            dateOfBirth: jsonData.step.data.dateOfBirth
+              ? jsonData.step.data.dateOfBirth.value
+              : "",
             resource: jsonData.resource,
             nationality: jsonData.step.data.nationality
               ? jsonData.step.data.nationality.value

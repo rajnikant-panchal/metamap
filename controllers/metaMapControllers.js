@@ -2,8 +2,32 @@ const asyncHandler = require("express-async-handler");
 const metamMap = require("../models/metaMapModel");
 
 const getAllData = asyncHandler(async (req, res) => {
-  const data = await metamMap.find({});
-  return data;
+  let jArr = await metamMap.find({}).then(result => {
+   return result;
+  })
+
+  let jArray = [];
+  if(jArr){
+  for(let i=0; i<jArr.length; i++){
+
+    let mergedObj = jArr[i].toObject();
+
+    let obj = {
+      "action": "<a href='#editEmployeeModal' data-id='"+mergedObj._id+"' class='edit editingTRbutton' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a> <a href='#' data-id='"+mergedObj._id+"' class='edit sendTRbutton' ><i class='material-icons'  title='Send'>&#xe163;</i></a>",
+    };
+
+    
+    mergedObj.action = obj.action
+    jArray.push(mergedObj);
+
+  }
+
+  res.json({data: jArray});
+} else {
+  res.json({data: jArray});
+}
+
+  
 });
 
 const addData = asyncHandler(async (req, res) => {
@@ -88,7 +112,7 @@ const updateDataById = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Data Not Found");
       } else {
-        res.redirect("https://httpwebhook.herokuapp.com/view/report");
+        res.redirect("/view/report");
       }
     }
   );

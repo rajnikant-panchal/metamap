@@ -6,17 +6,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/1.5.0/css/select.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.1.0/css/searchPanes.bootstrap5.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/searchpanes/2.1.0/js/dataTables.searchPanes.min.js"></script>
+  <script src="https://cdn.datatables.net/searchpanes/2.1.0/js/searchPanes.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/select/1.5.0/js/dataTables.select.min.js"></script>
   <script src="/script.js"></script>
 
   <title>Report</title>
   <style>
-    body {
+   body {
       color: #566787;
       background: #f5f5f5;
       font-family: 'Varela Round', sans-serif;
@@ -289,6 +298,17 @@
     .modal form label {
       font-weight: normal;
     }
+
+    .results tr[visible='false'],
+    .no-result {
+      display: none;
+    }
+
+    .results tr[visible='true'] {
+      display: table-row;
+    }
+
+    
   </style>
 
 </head>
@@ -305,14 +325,15 @@
                   <h2>Verified <b> Report</b></h2>
                 </div>
                 <div class="col-sm-6">
-                  <a href="https://httpwebhook.herokuapp.com/download/report" class="btn btn-success"><i
+                  <a href="/download/report" class="btn pull-right"><i
                       class="material-icons save">&#xe161;</i> <span>Export</span></a>
                 </div>
               </div>
             </div>
-            <table class="table table-striped table-hover">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
               <thead>
                 <tr>
+                  <th></th>
                   <th scope="col" class="text-nowrap">Verification Id</th>
                   <th scope="col" class="text-nowrap">Identity Status</th>
                   <th scope="col" class="text-nowrap">Name</th>
@@ -320,108 +341,23 @@
                   <th scope="col" class="text-nowrap">Birth Date</th>
                   <th scope="col" class="text-nowrap">Phone</th>
                   <th scope="col" class="text-nowrap">Email</th>
-                  <th scope="col" class="text-nowrap">Gender</th>
-                  <th scope="col" class="text-nowrap">Nationality</th>
-                  <th scope="col" class="text-nowrap">Field 1</th>
-                  <th scope="col" class="text-nowrap">Field 2</th>
-                  <th scope="col" class="text-nowrap">Field 3</th>
-                  <th scope="col" class="text-nowrap" colspan="2">Action</th>
+                  <th scope="col" class="text-nowrap">Action</th>
                 </tr>
               </thead>
-              <tbody>
-                <%if (data.length> 0){ %>
-                  <% data.forEach(function(row){ %>
-                    <tr>
-                      <td>
-                        <%= row.verificationId %>
-                      </td>
-                      <td>
-                        <%= row.identityStatus %>
-                      </td>
-                      <td>
-                        <%= row.name %>
-                      </td>
-                      <td>
-                        <%= row.documentNumber %>
-                      </td>
-                      <td>
-                        <%= row.dateOfBirth %>
-                      </td>
-                      <td>
-                        <%= row.phoneNumber %>
-                      </td>
-                      <td>
-                        <%= row.emailAddress %>
-                      </td>
-                      <td>
-                        <%= row.gender %>
-                      </td>
-                      <td>
-                        <%= row.nationality %>
-                      </td>
-                      <td>
-                        <%= row.field1 %>
-                      </td>
-                      <td>
-                        <%= row.field2 %>
-                      </td>
-                      <td>
-                        <%= row.field3 %>
-                      </td>
-                      <td>
-                        <a href="#editEmployeeModal" data-id="<%= row._id %>" class="edit editingTRbutton"
-                          data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
-                            title="Edit">&#xE254;</i></a>
-                      </td>
-                      <td>
-                        <a href="#" class="edit sendTRbutton" title="Send"><i
-                            class="material-icons send">&#xe163;</i></a>
-                      </td>
-                    </tr>
-                    <% })}else{ %>
-                      <tr>
-                        <td colspan="14" align="center">
-                          <h4>No Record Found</h4>
-                        </td>
-
-                      </tr>
-                      <% } %>
-
-
-              </tbody>
+              
+              <tfoot>
+                  <th></th>
+                  <th scope="col" class="text-nowrap">Verification Id</th>
+                  <th scope="col" class="text-nowrap">Identity Status</th>
+                  <th scope="col" class="text-nowrap">Name</th>
+                  <th scope="col" class="text-nowrap">Doc. Number</th>
+                  <th scope="col" class="text-nowrap">Birth Date</th>
+                  <th scope="col" class="text-nowrap">Phone</th>
+                  <th scope="col" class="text-nowrap">Email</th>
+                  <th scope="col" class="text-nowrap">Action</th>
+              </tfoot>
             </table>
-            <% if (pages > 0) { %>
-            <div class="clearfix">
-              <div class="hint-text">Showing <b><%=current %></b> out of <b><%= pages%></b> page(s)</div>
-              <ul class="pagination">
-                <% if (current == 1) { %>
-                  <li class="page-item disabled"><a class="page-link" href="#">First</a></li>
-                <% } else { %>
-                  <li class="page-item"><a class="page-link" href="/view/report/1">First</a></li>
-                <% } %>
 
-                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
-                    <% if (i !== 1) { %>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                    <% } %>
-                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
-                      <% if (i == current) { %>
-                          <li class="page-item active"><a class="page-link"><%= i %></a></li>
-                      <% } else { %>
-                          <li class="page-item"><a class="page-link" href="/view/report/<%= i %>"><%= i %></a></li>
-                      <% } %>
-                      <% if (i == Number(current) + 4 && i < pages) { %>
-                          <li class="page-item disabled"><a class="page-link">...</a></li>
-                      <% } %>
-                  <% } %>
-                  <% if (current == pages) { %>
-                    <li class="page-item disabled"><a class="page-link">Last</a></li>
-                <% } else { %>
-                    <li class="page-item"><a class="page-link" href="/view/report/<%= pages %>">Last</a></li>
-                <% } %>
-              </ul>
-            </div>
-            <% } %>
           </div>
         </div>
       </div>
@@ -432,14 +368,14 @@
     aria-hidden="true">
     <div class="modal-lg modal-dialog" style="max-width: 60%;" role="document">
       <div class="modal-content">
-        <form id="modalForm" enctype='application/json' action="https://httpwebhook.herokuapp.com/api/updateDataById/"
+        <form id="modalForm" enctype='application/json' action="/api/updateDataById"
           method="post">
           <div class="modal-header">
             <h4 class="modal-title">Edit</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
-            <div class="form-row">
+            <div class="row">
               <div class="form-group col-md-4">
                 <label>Verification ID</label>
                 <input type="hidden" name="id">
@@ -455,7 +391,7 @@
               </div>
             </div>
 
-            <div class="form-row">
+            <div class="row">
 
               <div class="form-group col-md-4">
                 <label>Document Number</label>
@@ -470,7 +406,7 @@
                 <input type="text" class="form-control" name="phoneNumber">
               </div>
             </div>
-            <div class="form-row">
+            <div class="row">
               <div class="form-group col-md-4">
                 <label>Email</label>
                 <input type="text" class="form-control" name="emailAddress">
@@ -484,7 +420,7 @@
                 <input type="text" class="form-control" name="nationality">
               </div>
             </div>
-            <div class="form-row">
+            <div class="row">
               <div class="form-group col-md-4">
                 <label>Add. Field 1</label>
                 <input type="text" class="form-control" name="field1">

@@ -45,6 +45,7 @@ if (cluster.isMaster) {
     "http://47.87.213.40",
     "http://localhost:5000",
     "http://httpwebhook.herokuapp.com",
+    "https://httpwebhook.herokuapp.com",
   ];
   const corsOptions = {
     origin: function (origin, callback) {
@@ -64,36 +65,15 @@ if (cluster.isMaster) {
   app.set("view engine", "ejs");
 
   app.use("/api", metaMapRoutes);
+
   app.get("/view/report", async (req, res) => {
-    res.redirect("/view/report/1");
+    res.render("report", {
+      data: [],
+    });
   });
 
-  app.get("/view/report/:page", async (req, res) => {
-    var perPage = 5;
-    var page = req.params.page || 1;
-
-    metamMap
-      .find({})
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec(function (err, result) {
-        metamMap.count().exec(function (err, count) {
-          if (err) {
-            res.render("report", {
-              data: [],
-            });
-          }
-          res.render("report", {
-            data: result,
-            current: page,
-            pages: Math.ceil(count / perPage),
-          });
-        });
-      });
-  });
-
-  app.get("/download/report", (req, res) => {
-    metaMapControllers.getAllData().then(async (response) => {
+  app.get("/download/report", async (req, res) => {
+    await metamMap.find({}).then(async (response) => {
       if (response) {
         const filePath = "report.xlsx";
         const workbook = new ExcelJS.Workbook();
@@ -133,7 +113,6 @@ if (cluster.isMaster) {
           });
         }
         await workbook.xlsx.writeFile(filePath).then((data) => {
-          console.log(data);
           res.download(filePath, "report.xlsx", (err) => {
             if (err) {
               res.send({
@@ -152,8 +131,8 @@ if (cluster.isMaster) {
     });
   });
 
-  app.post("/hook", (req, res) => {
-    generateData(req.body);
+  app.post("/hook", async (req, res) => {
+    await generateData(req.body);
     res.status(200).end(); // Responding is important
   });
 
@@ -380,9 +359,8 @@ if (cluster.isMaster) {
         }
       }
     } catch (err) {
-      logger.debug("Not able to parse the Response ");
-      logger.debug(res);
       logger.debug("Something went wrong....!");
+      logger.debug(res);
       logger.error(err);
     }
   };

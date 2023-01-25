@@ -89,6 +89,7 @@ if (cluster.isMaster) {
           { header: "EmailAddress", key: "emailAddress", width: 32 },
           { header: "Gender", key: "gender", width: 32 },
           { header: "Nationality", key: "nationality", width: 32 },
+          { header: "AML", key: "matchStatus", width: 32 },
           { header: "Field 1", key: "field1", width: 32 },
           { header: "Field 2", key: "field2", width: 32 },
           { header: "Field 3", key: "field3", width: 32 },
@@ -106,6 +107,7 @@ if (cluster.isMaster) {
             emailAddress: data.emailAddress,
             gender: data.gender,
             nationality: data.nationality,
+            matchStatus: data.matchStatus,
             field1: data.field1,
             field2: data.field2,
             field3: data.field3,
@@ -341,6 +343,54 @@ if (cluster.isMaster) {
           let inputJson = {
             verificationId: verificationId,
             emailAddress: jsonData.step.data.emailAddress,
+          };
+          await metamMap.findOneAndUpdate(
+            {
+              verificationId: verificationId,
+            },
+            { $set: inputJson },
+            { upsert: true, new: true },
+            function (err, data) {
+              if (err) {
+                console.log("Error while updaing data.!");
+              } else {
+                console.log("Last record updated.!");
+              }
+            }
+          );
+        }
+      } else if (
+        jsonData &&
+        jsonData.resource &&
+        jsonData.step &&
+        jsonData.step.data &&
+        jsonData.step.data.details &&
+        jsonData.step.data.details.matchStatus
+      ) {
+        const verificationId = jsonData.resource.substring(
+          jsonData.resource.lastIndexOf("/") + 1
+        );
+
+        let lastRec = await metamMap.findOne({
+          verificationId: verificationId,
+        });
+        if (lastRec) {
+          lastRec.matchStatus = jsonData.step.data.details.matchStatus;
+          await metamMap.findByIdAndUpdate(
+            lastRec._id,
+            { $set: lastRec },
+            function (err, data) {
+              if (err) {
+                console.log("Error while updaing data.!");
+              } else {
+                console.log("Last record updated.!");
+              }
+            }
+          );
+        } else {
+          let inputJson = {
+            verificationId: verificationId,
+            matchStatus: jsonData.step.data.details.matchStatus,
           };
           await metamMap.findOneAndUpdate(
             {

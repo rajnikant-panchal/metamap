@@ -15,6 +15,7 @@ const metaMap = new Schema({
   gender: { type: String, required: false },
   resource: { type: String, required: false },
   nationality: { type: String, required: false },
+  matchStatus: { type: String, required: false },
   
 });
 

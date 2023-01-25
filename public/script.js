@@ -23,6 +23,8 @@ function get() {
         $('#modalForm [name="emailAddress"]').val(response.emailAddress);
         $('#modalForm [name="gender"]').val(response.gender);
         $('#modalForm [name="nationality"]').val(response.nationality);
+        $('#modalForm [name="matchStatus"]').val(response.matchStatus);
+        
       },
     });
   });
@@ -49,6 +51,7 @@ function sendData() {
           email: response.emailAddress,
           gender: response.gender,
           nationality: response.nationality,
+          matchStatus: response.matchStatus,
           "add field1": response.field1,
           "add field2": response.field2,
           "add field3": response.field3,
@@ -93,7 +96,7 @@ $(document).ready(function () {
       { data: "emailAddress" },
       { data: "action" },
     ],
-    order: [[1, "asc"]],
+    order: [[1, "desc"]],
   });
 
   // Add event listener for opening and closing details
@@ -114,13 +117,12 @@ $(document).ready(function () {
 });
 
 function format(d) {
-  // `d` is the original data object for the row
-  console.log(d);
   return (
     '<table class="table table-bordered" border="0" style="padding-left:50px;">' +
     "<tr>" +
     "<th>Gender</th>" +
-    "<th>Nationality:</th>" +
+    "<th>Nationality</th>" +
+    "<th>AML</th>" +
     "<th>Field 1</th>" +
     "<th>Field 2</th>" +
     "<th>Field 3:</th>" +
@@ -131,6 +133,9 @@ function format(d) {
     "</td>" +
     "<td>" +
     (d.nationality ? d.nationality : "-") +
+    "</td>" +
+    "<td>" +
+    (d.matchStatus ? d.matchStatus : "-") +
     "</td>" +
     "<td>" +
     (d.field1 ? d.field1 : "-") +

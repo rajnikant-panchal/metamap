@@ -52,9 +52,9 @@ function sendData() {
           gender: response.gender,
           nationality: response.nationality,
           matchStatus: response.matchStatus,
-          "add field1": response.field1,
-          "add field2": response.field2,
-          "add field3": response.field3,
+          "doc type": response.field1,
+          "govt check result": response.field2,
+          "remarks": response.field3,
         };
 
         $.ajax({
@@ -123,9 +123,9 @@ function format(d) {
     "<th>Gender</th>" +
     "<th>Nationality</th>" +
     "<th>AML</th>" +
-    "<th>Field 1</th>" +
-    "<th>Field 2</th>" +
-    "<th>Field 3:</th>" +
+    "<th>Doc Type</th>" +
+    "<th>Govt Check Result</th>" +
+    "<th>Remarks</th>" +
     "</tr>" +
     "<tr>" +
     "<td>" +

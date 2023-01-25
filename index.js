@@ -90,9 +90,9 @@ if (cluster.isMaster) {
           { header: "Gender", key: "gender", width: 32 },
           { header: "Nationality", key: "nationality", width: 32 },
           { header: "AML", key: "matchStatus", width: 32 },
-          { header: "Field 1", key: "field1", width: 32 },
-          { header: "Field 2", key: "field2", width: 32 },
-          { header: "Field 3", key: "field3", width: 32 },
+          { header: "Doc Type", key: "field1", width: 32 },
+          { header: "Govt Check Result", key: "field2", width: 32 },
+          { header: "Remarks", key: "field3", width: 32 },
           { header: "Resource", key: "resource", width: 32 },
         ];
 

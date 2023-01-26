@@ -364,8 +364,8 @@ if (cluster.isMaster) {
         jsonData.resource &&
         jsonData.step &&
         jsonData.step.data &&
-        jsonData.step.data.details &&
-        jsonData.step.data.details.matchStatus
+        jsonData.step.data[0] &&
+        jsonData.step.data[0].originalMatchStatus
       ) {
         const verificationId = jsonData.resource.substring(
           jsonData.resource.lastIndexOf("/") + 1
@@ -375,7 +375,7 @@ if (cluster.isMaster) {
           verificationId: verificationId,
         });
         if (lastRec) {
-          lastRec.matchStatus = jsonData.step.data.details.matchStatus;
+          lastRec.matchStatus = jsonData.step.data[0].originalMatchStatus;
           await metamMap.findByIdAndUpdate(
             lastRec._id,
             { $set: lastRec },
@@ -390,7 +390,7 @@ if (cluster.isMaster) {
         } else {
           let inputJson = {
             verificationId: verificationId,
-            matchStatus: jsonData.step.data.details.matchStatus,
+            matchStatus: jsonData.step.data[0].originalMatchStatus,
           };
           await metamMap.findOneAndUpdate(
             {

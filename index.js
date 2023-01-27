@@ -182,9 +182,9 @@ if (cluster.isMaster) {
             { $set: lastRec },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-1..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated.-1..."+verificationId);
               }
             }
           );
@@ -214,9 +214,9 @@ if (cluster.isMaster) {
             { upsert: true, new: true },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-2..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated-2..."+verificationId);
               }
             }
           );
@@ -238,9 +238,9 @@ if (cluster.isMaster) {
             { $set: lastRec },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-3..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated-3..."+verificationId);
               }
             }
           );
@@ -257,9 +257,9 @@ if (cluster.isMaster) {
             { upsert: true, new: true },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-4..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated-4..."+verificationId);
               }
             }
           );
@@ -286,9 +286,9 @@ if (cluster.isMaster) {
             { $set: lastRec },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-5..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated-5..."+verificationId);
               }
             }
           );
@@ -305,9 +305,9 @@ if (cluster.isMaster) {
             { upsert: true, new: true },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-6..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated-6..."+verificationId);
               }
             }
           );
@@ -333,9 +333,9 @@ if (cluster.isMaster) {
             { $set: lastRec },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-7..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated-7..."+verificationId);
               }
             }
           );
@@ -352,9 +352,9 @@ if (cluster.isMaster) {
             { upsert: true, new: true },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-8..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated-8..."+verificationId);
               }
             }
           );
@@ -367,6 +367,9 @@ if (cluster.isMaster) {
         jsonData.step.data[0] &&
         jsonData.step.data[0].originalMatchStatus
       ) {
+
+        logger
+
         const verificationId = jsonData.resource.substring(
           jsonData.resource.lastIndexOf("/") + 1
         );
@@ -381,9 +384,9 @@ if (cluster.isMaster) {
             { $set: lastRec },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-9..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated-9..."+verificationId);
               }
             }
           );
@@ -400,9 +403,9 @@ if (cluster.isMaster) {
             { upsert: true, new: true },
             function (err, data) {
               if (err) {
-                console.log("Error while updaing data.!");
+                logger.debug("Error while updaing data-10..."+verificationId);
               } else {
-                console.log("Last record updated.!");
+                logger.debug("Last record updated-10..."+verificationId);
               }
             }
           );
